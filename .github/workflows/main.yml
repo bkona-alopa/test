@@ -56,6 +56,6 @@ jobs:
           echo "test=final" >> $GITHUB_OUTPUT
 
       - name: final
-        if: steps.test.outputs.test == ${{ github.sha }}
+        if: ${{ steps.test.outputs.test ==  github.sha }}
         run: |
           echo "both are equal"
