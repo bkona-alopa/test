@@ -33,14 +33,14 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          push: false
+          push: true
           context: .
           tags: |
             balamani3010/athene-test:latest-${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          outputs: type=docker,dest=/tmp/athene-test.tar
+          # outputs: type=docker,dest=/tmp/athene-test.tar
 
       - name: tetsing docker images
         run: |
-          docker images ls
+          docker images
