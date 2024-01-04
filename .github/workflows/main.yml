@@ -40,7 +40,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Build and push
+      - name: Build and store
         uses: docker/build-push-action@v5
         with:
           push: false
@@ -53,4 +53,4 @@ jobs:
 
       - name: tetsing docker images
         run: |
-          docker images
+          ls -l /tmp
