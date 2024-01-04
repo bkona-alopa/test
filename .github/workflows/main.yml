@@ -13,7 +13,6 @@ jobs:
   ImageBuildAndPush:
     name: Building Docker image
     runs-on: ubuntu-latest
-    timeout-minutes: 40
 
     steps:
       - name: Checkout
@@ -21,36 +20,42 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v3
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # - name: Login to Docker Hub
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          context: .
-          tags: |
-            balamani3010/athene-test:latest-${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      # - name: Build and push
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     push: true
+      #     context: .
+      #     tags: |
+      #       balamani3010/athene-test:latest-${{ github.sha }}
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
 
-      - name: Build and store
-        uses: docker/build-push-action@v5
-        with:
-          push: false
-          context: .
-          tags: |
-            balamani3010/athene-test:latest-${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          outputs: type=docker,dest=/tmp/athene-test.tar
+      # - name: Build and store
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     push: false
+      #     context: .
+      #     tags: |
+      #       balamani3010/athene-test:latest-${{ github.sha }}
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+      #     outputs: type=docker,dest=/tmp/athene-test.tar
 
       - name: tetsing docker images
+        id: test
         run: |
-          ls -l /tmp
+          echo "test=final" >> $GITHUB_OUTPUT
+
+      - name: final
+        if: steps.test.outputs.test == ${{ github.sha }}
+        run: |
+          echo "both are equal"
