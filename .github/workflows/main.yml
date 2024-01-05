@@ -56,6 +56,7 @@ jobs:
           echo "test=${{ github.sha }}" >> $GITHUB_OUTPUT
 
       - name: final
+        id: check
         if: ${{ steps.test.outputs.test ==  github.sha }}
         run: |
           echo "both are equal"
@@ -63,6 +64,13 @@ jobs:
           if [ "$TEST" == ''];
           then
             echo "test fail"
+            echo "ImageCheck=1" >> $GITHUB_OUTPUT
           else
             echo "test pass"
+            echo "ImageCheck=0" >> $GITHUB_OUTPUT
           fi
+
+      - name: checking final
+        if: ${{ steps.check.outputs.ImageCheck == 0 }}
+        run: |
+          echo "test passed"
