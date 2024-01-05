@@ -61,6 +61,7 @@ jobs:
         run: |
           echo "both are equal"
           TEST=$(ls -l)
+          echo "TEST=$TEST" >> $GITHUB_OUTPUT
           if [ "$TEST" == ''];
           then
             echo "test fail"
@@ -74,3 +75,4 @@ jobs:
         if: ${{ steps.check.outputs.ImageCheck == 0 }}
         run: |
           echo "test passed"
+          echo "test: ${{ steps.check.outputs.TEST }}"
