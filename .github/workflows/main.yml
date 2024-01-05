@@ -59,3 +59,10 @@ jobs:
         if: ${{ steps.test.outputs.test ==  github.sha }}
         run: |
           echo "both are equal"
+          TEST=$(ls -l)
+          if [ "$TEST" == ''];
+          then
+            echo "test fail"
+          else
+            echo "test pass"
+          fi
