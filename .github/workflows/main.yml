@@ -72,7 +72,7 @@ jobs:
           fi
 
       - name: checking final
-        if: ${{ steps.check.outputs.ImageCheck == 0 }}
+        if: false
         run: |
           echo "test passed"
           echo "test: ${{ steps.check.outputs.TEST }}"
