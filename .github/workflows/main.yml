@@ -76,3 +76,14 @@ jobs:
         run: |
           echo "test passed"
           echo "test: ${{ steps.check.outputs.TEST }}"
+
+  ImageBuildAndPushtest:
+    if: false
+    name: Building Docker image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
