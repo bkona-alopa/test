@@ -57,7 +57,7 @@ jobs:
 
       - name: final
         id: check
-        if: ${{ steps.test.outputs.test ==  github.sha }}
+        if: false
         run: |
           echo "both are equal"
           TEST=$(ls -l)
