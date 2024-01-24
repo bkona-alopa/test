@@ -62,7 +62,7 @@ jobs:
           echo "both are equal"
           TEST=$(ls -l)
           echo "TEST=$TEST" >> $GITHUB_OUTPUT
-          if [ "$TEST" == ''];
+          if [ -z "$TEST" ];
           then
             echo "test fail"
             echo "ImageCheck=1" >> $GITHUB_OUTPUT
