@@ -79,7 +79,7 @@ jobs:
 
   ImageBuildAndPushtest:
     if: false
-    name: Building Docker image
+    name: Building Docker image test
     runs-on: ubuntu-latest
 
     steps:
