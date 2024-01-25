@@ -78,7 +78,7 @@ jobs:
           echo "test: ${{ steps.check.outputs.TEST }}"
 
   ImageBuildAndPushtest:
-    if: false
+    if: ${{ github.ref_name == 'master' }}
     name: Building Docker image test
     runs-on: ubuntu-latest
 
