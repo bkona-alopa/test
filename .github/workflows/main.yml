@@ -43,10 +43,12 @@ jobs:
           cache-to: type=gha,mode=max
           outputs: type=docker,dest=/tmp/athene-test.tar
 
-  #     - name: tetsing docker images
-  #       id: test
-  #       run: |
-  #         echo "test=${{ github.sha }}" >> $GITHUB_OUTPUT
+      - name: tetsing docker images
+        id: test
+        run: |
+          docker images
+          ls -l
+          pwd
 
   #     - name: final
   #       id: check
