@@ -56,5 +56,5 @@ jobs:
         id: testing
         run: |
           docker images
-          ls -l
+          ls -l /tmp/
           pwd
