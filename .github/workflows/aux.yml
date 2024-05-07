@@ -1,0 +1,45 @@
+name: API-test
+on:
+  workflow_call:
+    inputs:
+      supported_country:
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+  deployments: write
+
+jobs:
+  API-test-prep:
+    runs-on: ubuntu-latest
+
+    outputs:
+      supportedVersionList: ${{ steps.json_props.outputs.SUPPORTED_VERSIONS_LIST}}_VER{{ inputs.supported_country }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Reading property files
+        continue-on-error: true
+        id: json_props
+        uses: zoexx/github-action-json-file-properties@1.0.6
+        with:
+          file_path: "./test.json"
+
+  API-test:
+    needs: API-test-prep
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+        supportedVersion: ${{ inputs.supported_country }}
+        countryCode: ${{ fromJSON(needs.API-test-prep.outputs.supportedVersionList) }}
+
+    steps:
+      - name: test
+        run: |
+          echo "${{matrix.supportedVersion}} - ${{matrix.countryCode}}"
