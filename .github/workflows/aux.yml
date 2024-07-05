@@ -1,10 +1,8 @@
 name: API-test
 on:
-  workflow_call:
-    inputs:
-      supported_country:
-        required: true
-        type: string
+  push:
+    branches:
+      - main
 
 permissions:
   id-token: write
@@ -14,9 +12,12 @@ permissions:
 jobs:
   API-test-prep:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        supportedVersion: ["test1", "test2"]
 
     outputs:
-      supportedVersionList: ${{ steps.json_props.outputs.SUPPORTED_VERSIONS_LIST}}_VER{{ inputs.supported_country }}
+      test: ${{ steps.outputTest.outputs.test}}
 
     steps:
       - name: Checkout
@@ -29,17 +30,19 @@ jobs:
         with:
           file_path: "./test.json"
 
+      - name: testing outputs
+        id: outputTest
+        run: |
+          echo "test=${{matrix.supportedVersion}}" >> $GITHUB_OUTPUT
+
   API-test:
     needs: API-test-prep
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 4
-      fail-fast: false
       matrix:
-        supportedVersion: ${{ inputs.supported_country }}
-        countryCode: ${{ fromJSON(needs.API-test-prep.outputs.supportedVersionList) }}
+        supportedVersion: ["test1", "test2"]
 
     steps:
       - name: test
         run: |
-          echo "${{matrix.supportedVersion}} - ${{matrix.countryCode}}"
+          echo "test: ${{needs.API-test-prep.outputs.test}}"
