@@ -34,7 +34,7 @@ jobs:
         id: out
         with:
           matrix-step-name: ${{ github.job }}
-          matrix-key: ${{ matrix.supportedVersion }}
+          matrix-key: ${{ matrix.supportedVersion }}.${{ matrix.testVersion }}
           outputs: |-
             image: ${{ steps.outputTest.outputs.test }}
 
@@ -61,4 +61,4 @@ jobs:
     steps:
       - name: test
         run: |
-          echo "test: ${{ fromJson(needs.read.outputs.result).image[format('{0}', matrix.supportedVersion)] }}"
+          echo "test: ${{ fromJson(needs.read.outputs.result).image[format('{0}.{1}', matrix.supportedVersion, matrix.testVersion)] }}"
