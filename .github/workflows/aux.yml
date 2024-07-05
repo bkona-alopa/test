@@ -23,13 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Reading property files
-        continue-on-error: true
-        id: json_props
-        uses: zoexx/github-action-json-file-properties@1.0.6
-        with:
-          file_path: "./test.json"
-
       - name: testing outputs
         id: outputTest
         run: |
@@ -67,3 +60,7 @@ jobs:
       - name: test
         run: |
           echo "test: ${{ fromJson(needs.read.outputs.result).image.test1 }}"
+
+      - name: test
+        run: |
+          echo "test: ${{ fromJson(needs.read.outputs.result).image.test2 }}"
