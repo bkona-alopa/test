@@ -35,8 +35,29 @@ jobs:
         run: |
           echo "test=${{matrix.supportedVersion}}" >> $GITHUB_OUTPUT
 
+      - name: testing the matrix write
+        uses: cloudposse/github-action-matrix-outputs-write@v1
+        id: out
+        with:
+          matrix-step-name: ${{ github.job }}
+          matrix-key: ${{ matrix.supportedVersion }}
+          outputs: |-
+            image: ${{ steps.outputTest.outputs.test }}
+
+  read:
+      runs-on: ubuntu-latest
+      needs: [API-test-prep]
+      steps:
+        - uses: cloudposse/github-action-matrix-outputs-read@v1
+          id: read
+          with:
+            matrix-step-name: API-test-prep
+
+      outputs:
+        result: "${{ steps.read.outputs.result }}"
+
   API-test:
-    needs: API-test-prep
+    needs: read
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -45,4 +66,4 @@ jobs:
     steps:
       - name: test
         run: |
-          echo "test: ${{needs.API-test-prep.outputs.test}}"
+          echo "test: ${{ fromJson(needs.read.outputs.result).image.test1 }}"
